@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="json-execution">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/json-execution.jar!/" />
+      <root url="jar://$PROJECT_DIR$/json-compilation.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
