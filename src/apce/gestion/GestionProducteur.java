@@ -11,6 +11,7 @@ import apce.tuples.TupleProduit;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class GestionProducteur extends GestionTransactions{
     private final TableProducteur producteurs;
@@ -72,8 +73,18 @@ public class GestionProducteur extends GestionTransactions{
         }
     }
 
-    public void supprimerProducteur(String nomProducteur) {
+    public void supprimerProducteur(String nomProducteur) throws Exception {
         //TODO votre code ici
-        //Vous devriez vérifier qu'un producteur existe avant de le supprimer
+        try {
+            cx.demarreTransaction();
+            if(producteurs.existe(nomProducteur)) {
+                throw new Exception("Le producteur "+ nomProducteur +" n'existe pas.");
+            }
+            producteurs.supprimerProducteur(nomProducteur);
+            cx.executeTransaction();
+        } catch (Exception e) {
+            cx.annuleTransaction();
+            throw e;
+        }
     }
 }

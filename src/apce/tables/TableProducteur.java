@@ -10,17 +10,23 @@ import java.sql.SQLException;
 public class TableProducteur extends GestionTables {
     private final PreparedStatement stmtInsert;
     private final PreparedStatement stmtGet;
-    //private final PreparedStatement stmtGetAll;
-    //private final PreparedStatement stmtDelete;
+    private final PreparedStatement stmtGetAll;
+    private final PreparedStatement stmtDelete;
 
     public TableProducteur(Connexion cx) throws SQLException {
         super(cx);
         this.stmtInsert = cx.getConnection().prepareStatement(
-                "INSERT INTO Producteur(nomProducteur, courriel, nombreEmployes, adresse)" +
+                "INSERT INTO Producteur(nom, courriel, nombre_employes, adresse_postale)" +
                         "VALUES (?, ?, ?, ?)"
         );
         this.stmtGet = cx.getConnection().prepareStatement(
-                "SELECT nomProducteur, courriel, nombreEmployes, adresse FROM Producteur WHERE nomProducteur = ?"
+                "SELECT nom, courriel, nombre_employes, adresse_postale FROM Producteur WHERE nom = ?"
+        );
+        this.stmtGetAll = cx.getConnection().prepareStatement(
+                "SELECT nom, courriel, nombre_employes, adresse_postale FROM Producteur"
+        );
+        this.stmtDelete = cx.getConnection().prepareStatement(
+                "DELETE FROM Producteur WHERE nom = ?"
         );
     }
 
@@ -43,5 +49,13 @@ public class TableProducteur extends GestionTables {
     public TupleProducteur getProducteur(String nomProducteur) throws SQLException {
         // TODO : votre implémentation ici
         return new TupleProducteur();
+    }
+    public void supprimerProducteur(String nomProducteur) throws SQLException {
+        try {
+            stmtDelete.setString(1, nomProducteur);
+            stmtDelete.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
