@@ -69,11 +69,11 @@ public class GestionAPCE {
     }
 
     public void dropBD() throws SQLException, FileNotFoundException {
-        //TODO votre code ici
+        executeSQL("destruction.sql");
     }
 
     public void afficherBD() throws SQLException, FileNotFoundException {
-        //TODO votre code ici
+        executeSQL("affichage.sql");
     }
 
     private void executeSQL(String scriptName) throws SQLException, FileNotFoundException {
