@@ -6,9 +6,7 @@ public class TupleProducteur {
     public String courriel;
     public String adresse;
 
-    public TupleProducteur(){
-
-    }
+    public TupleProducteur(){}
 
     public TupleProducteur(String nom, int nbEmploi, String courriel, String adresse){
         this.nom = nom;
