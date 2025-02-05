@@ -8,6 +8,8 @@ import java.sql.SQLException;
 public class Apce {
     public static final String RESET = "\033[0m";  // Remet la couleur du texte à celle par défaut
     public static final String YELLOW = "\033[0;33m";
+    public static final String GREEN = "\033[0;32m";
+
     private final Connexion cx;
     private final boolean ECHO = true;
     private final GestionAPCE gestionAPCE;
@@ -82,11 +84,12 @@ public class Apce {
         System.out.println(" Les dates sont en format yyyy-mm-dd.");
         System.out.println();
         System.out.println("Les transactions sont:");
-        System.out.println(YELLOW);
+        System.out.println(GREEN);
         System.out.println("  aide");
         System.out.println("  ajouterProducteur nom courriel nombreEmployes adressePostale");
         System.out.println("  afficherProducteur nom");
         System.out.println("  supprimerProducteur nom");
+        System.out.println(YELLOW);
         System.out.println("  ajouterProduit nom prix cout catégorie nomProducteur");
         System.out.println("  afficherProduit nom");
         System.out.println("  supprimerProduit nom");
@@ -117,7 +120,7 @@ public class Apce {
             if(ECHO) System.out.println(transaction);
             // Decoupage de la transaction en mots
             String[] tokens = transaction.split("\\s");
-            if (transaction.length()>0 && tokens.length > 0)
+            if (!transaction.isEmpty() && tokens.length > 0)
             {
                 String command = tokens[0];
 
@@ -128,8 +131,8 @@ public class Apce {
                     case "ajouterProducteur":
                         String nom = tokens[1];
                         String courriel = tokens[2];
-                        int nombreEmployes = Integer.parseInt(tokens[3]);
-                        String adressePostale = lireReste(tokens, 4);
+                        String adressePostale = tokens[3];
+                        int nombreEmployes = Integer.parseInt(tokens[4]);
                         gestionAPCE.getGestionProducteur().ajouterProducteur(nom, courriel, nombreEmployes, adressePostale);
                         break;
                     case "afficherProducteur":
@@ -141,16 +144,22 @@ public class Apce {
                         gestionAPCE.getGestionProducteur().supprimerProducteur(nomProducteur);
                         break;
                     case "ajouterProduit":
-                        //TODO : votre appel ici
 
+                        gestionAPCE.getGestionProduit().ajouterProduit(
+                                tokens[1], // nom
+                                Integer.parseInt(tokens[2]), // prix
+                                Integer.parseInt(tokens[3]), // cout
+                                tokens[4], // categorie
+                                tokens[5] // nomProducteur
+                                );
                         break;
                     case "afficherProduit":
                         //TODO : votre appel ici
-
+                        gestionAPCE.getGestionProduit().afficherProduit(tokens[1]);
                         break;
                     case "supprimerProduit":
                         //TODO : votre appel ici
-
+                        gestionAPCE.getGestionProduit().supprimerProduit(tokens[1]);
                         break;
                     case "ajouterFournisseur":
                         nom = tokens[1];
@@ -185,10 +194,10 @@ public class Apce {
                         gestionAPCE.creerBD();
                         break;
                     case "afficher":
-                        //TODO Votre appel ici
+                        gestionAPCE.afficherBD();
                         break;
                     case "détruire":
-                        //TODO Votre appel ici
+                        gestionAPCE.dropBD();
                         break;
                     case "quitter":
                         System.exit(0);
